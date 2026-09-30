@@ -49,8 +49,8 @@ export default function CaminoSER() {
 
         <div className="relative z-10 mx-auto flex min-h-[60vh] md:min-h-[88vh] w-full max-w-7xl flex-col px-6 py-20 sm:px-8 sm:py-24 lg:px-10 lg:py-28">
           <div className="max-w-3xl">
-            <p className="text-sm font-medium uppercase tracking-[0.35em] text-white/70">
-              Iniciación
+            <p className="text-xs sm:text-sm font-medium uppercase tracking-[0.35em] text-cyan-300 drop-shadow-[0_0_10px_rgba(0,229,255,0.5)]">
+              Iniciación &amp; Despertar Interior
             </p>
             <h1 className="mt-4 text-5xl font-semibold text-white sm:text-6xl lg:text-7xl">
               Camino al SER

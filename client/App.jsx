@@ -6,25 +6,35 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
-import { useEffect } from "react";
+import { Suspense, lazy, useEffect } from "react";
 import Layout from "./components/Layout";
-import Index from "./pages/Index";
-import Eventos from "./pages/Eventos";
-import PlaceholderPage from "./pages/PlaceholderPage";
-import NotFound from "./pages/NotFound";
-import Proposito from "./pages/Proposito";
-import CaminoSER from "./pages/CaminoSER";
-import ClasesEnVivo from "./pages/ClasesEnVivo";
-import MeditacionesGuiadas from "./pages/MeditacionesGuiadas";
-import ProgramasSanacion from "./pages/ProgramasSanacion";
-import PlantasMedicinales from "./pages/PlantasMedicinales";
-import Viajes from "./pages/Viajes";
-import Musica from "./pages/Musica";
-import Libros from "./pages/Libros";
-import Documentos from "./pages/Documentos";
-import Blog from "./pages/Blog";
 
-const queryClient = new QueryClient();
+// Lazy-loaded pages for optimal route code-splitting and ultra-fast initial load
+const Index = lazy(() => import("./pages/Index"));
+const Eventos = lazy(() => import("./pages/Eventos"));
+const PlaceholderPage = lazy(() => import("./pages/PlaceholderPage"));
+const NotFound = lazy(() => import("./pages/NotFound"));
+const Proposito = lazy(() => import("./pages/Proposito"));
+const CaminoSER = lazy(() => import("./pages/CaminoSER"));
+const ClasesEnVivo = lazy(() => import("./pages/ClasesEnVivo"));
+const MeditacionesGuiadas = lazy(() => import("./pages/MeditacionesGuiadas"));
+const ProgramasSanacion = lazy(() => import("./pages/ProgramasSanacion"));
+const PlantasMedicinales = lazy(() => import("./pages/PlantasMedicinales"));
+const Viajes = lazy(() => import("./pages/Viajes"));
+const ViajeDetalle = lazy(() => import("./pages/ViajeDetalle"));
+const Musica = lazy(() => import("./pages/Musica"));
+const Libros = lazy(() => import("./pages/Libros"));
+const Documentos = lazy(() => import("./pages/Documentos"));
+const Blog = lazy(() => import("./pages/Blog"));
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 1000 * 60 * 5, // 5 min cache
+      refetchOnWindowFocus: false,
+    },
+  },
+});
 
 const PRELOAD_IMAGES = [
   "/Viajes.webp",
@@ -38,7 +48,8 @@ const PRELOAD_IMAGES = [
   "/Documentos.webp",
   "/ClasesVivo.webp",
   "/CaminoSER.webp",
-  "/Blog.webp"
+  "/Blog.webp",
+  "/MikaelEneagrama.webp"
 ];
 
 function ImagePreloader() {
@@ -48,7 +59,7 @@ function ImagePreloader() {
         const img = new Image();
         img.src = src;
       });
-    }, 1500); // 1.5 second delay so it doesn't block initial page load
+    }, 1800); // Wait 1.8s so initial render is completely free
     return () => clearTimeout(timer);
   }, []);
   return null;
@@ -64,14 +75,23 @@ function ScrollToTop() {
   return null;
 }
 
-const App = () =>
-<QueryClientProvider client={queryClient}>
+function PageLoadingFallback() {
+  return (
+    <div className="min-h-screen bg-brand-ink flex flex-col items-center justify-center">
+      <div className="h-10 w-10 animate-spin rounded-full border-2 border-white/20 border-t-cyan-400 shadow-[0_0_20px_rgba(56,189,248,0.5)]" />
+    </div>
+  );
+}
+
+const App = () => (
+  <QueryClientProvider client={queryClient}>
     <TooltipProvider>
       <Toaster />
       <Sonner />
       <ImagePreloader />
       <BrowserRouter>
         <ScrollToTop />
+        <Suspense fallback={<PageLoadingFallback />}>
           <Routes>
             <Route element={<Layout />}>
               <Route path="/" element={<Index />} />
@@ -83,31 +103,33 @@ const App = () =>
               <Route path="/iniciacion/proposito" element={<Proposito />} />
               <Route path="/iniciacion/camino-al-ser" element={<CaminoSER />} />
               <Route
-              path="/iniciacion/clases-en-vivo"
-              element={<ClasesEnVivo />} />
-            
+                path="/iniciacion/clases-en-vivo"
+                element={<ClasesEnVivo />}
+              />
               <Route
-              path="/iniciacion/meditaciones-guiadas"
-              element={<MeditacionesGuiadas />} />
-            
+                path="/iniciacion/meditaciones-guiadas"
+                element={<MeditacionesGuiadas />}
+              />
               <Route
-              path="/iniciacion/programas-de-sanacion"
-              element={<ProgramasSanacion />} />
-            
+                path="/iniciacion/programas-de-sanacion"
+                element={<ProgramasSanacion />}
+              />
               <Route
-              path="/iniciacion/plantas-medicinales"
-              element={<PlantasMedicinales />} />
-            
+                path="/iniciacion/plantas-medicinales"
+                element={<PlantasMedicinales />}
+              />
               <Route path="/iniciacion/viajes" element={<Viajes />} />
+              <Route path="/iniciacion/viajes/:id" element={<ViajeDetalle />} />
               <Route path="/musica" element={<Musica />} />
               <Route path="/shop" element={<PlaceholderPage title="Shop" />} />
             </Route>
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
+        </Suspense>
       </BrowserRouter>
     </TooltipProvider>
-  </QueryClientProvider>;
-
+  </QueryClientProvider>
+);
 
 createRoot(document.getElementById("root")).render(<App />);

@@ -132,3 +132,139 @@
     white-space: pre;
   }
 }
+
+/* ==================================================== */
+/* 3D Card Flip & Cosmic Pulse Utilities (YoSoy)        */
+/* ==================================================== */
+
+.perspective-1000 {
+  perspective: 1000px;
+}
+
+.perspective-1200 {
+  perspective: 1200px;
+}
+
+.transform-style-3d {
+  transform-style: preserve-3d;
+}
+
+.backface-hidden {
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.rotate-y-180 {
+  transform: rotateY(180deg);
+}
+
+@keyframes cardFloat1 {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-9px);
+  }
+}
+
+@keyframes cardFloat2 {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-12px);
+  }
+}
+
+@keyframes cardFloat3 {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+.animate-card-float-1 {
+  animation: cardFloat1 4.5s ease-in-out infinite;
+}
+
+.animate-card-float-2 {
+  animation: cardFloat2 5s ease-in-out infinite 0.7s;
+}
+
+.animate-card-float-3 {
+  animation: cardFloat3 4.8s ease-in-out infinite 1.4s;
+}
+
+@keyframes auraPulseBlue {
+  0%, 100% {
+    box-shadow: 0 0 25px rgba(59, 130, 246, 0.4), 0 0 60px rgba(37, 99, 235, 0.15), inset 0 0 15px rgba(59, 130, 246, 0.2);
+    border-color: rgba(96, 165, 250, 0.55);
+  }
+  50% {
+    box-shadow: 0 0 45px rgba(59, 130, 246, 0.7), 0 0 90px rgba(37, 99, 235, 0.35), inset 0 0 25px rgba(59, 130, 246, 0.35);
+    border-color: rgba(147, 197, 253, 0.9);
+  }
+}
+
+@keyframes auraPulseBlack {
+  0%, 100% {
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.9), 0 0 50px rgba(99, 102, 241, 0.25), inset 0 0 20px rgba(255, 255, 255, 0.06);
+    border-color: rgba(255, 255, 255, 0.35);
+  }
+  50% {
+    box-shadow: 0 0 50px rgba(0, 0, 0, 0.95), 0 0 85px rgba(99, 102, 241, 0.45), inset 0 0 30px rgba(255, 255, 255, 0.15);
+    border-color: rgba(255, 255, 255, 0.75);
+  }
+}
+
+@keyframes auraPulseYellow {
+  0%, 100% {
+    box-shadow: 0 0 25px rgba(245, 158, 11, 0.4), 0 0 60px rgba(217, 119, 6, 0.15), inset 0 0 15px rgba(245, 158, 11, 0.2);
+    border-color: rgba(251, 191, 36, 0.55);
+  }
+  50% {
+    box-shadow: 0 0 45px rgba(245, 158, 11, 0.7), 0 0 90px rgba(217, 119, 6, 0.35), inset 0 0 25px rgba(245, 158, 11, 0.35);
+    border-color: rgba(252, 211, 77, 0.9);
+  }
+}
+
+.animate-glow-blue {
+  animation: auraPulseBlue 3.2s ease-in-out infinite;
+}
+
+.animate-glow-black {
+  animation: auraPulseBlack 3.5s ease-in-out infinite;
+}
+
+.animate-glow-yellow {
+  animation: auraPulseYellow 3.3s ease-in-out infinite;
+}
+
+@keyframes shimmerBeam {
+  0% {
+    transform: translateX(-150%) rotate(25deg);
+  }
+  100% {
+    transform: translateX(250%) rotate(25deg);
+  }
+}
+
+.shimmer-active {
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(
+    to right,
+    transparent 0%,
+    rgba(255, 255, 255, 0.06) 45%,
+    rgba(255, 255, 255, 0.2) 50%,
+    rgba(255, 255, 255, 0.06) 55%,
+    transparent 100%
+  );
+  animation: shimmerBeam 4.5s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  pointer-events: none;
+}
